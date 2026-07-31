@@ -1,0 +1,53 @@
+{
+  "hidefiles.configurationType": "local",
+  "hidefiles.globalConfig": {
+    "profiles": [
+      {
+        "name": "Default",
+        "detail": "",
+        "description": "Test",
+        "hidden": [
+          ".vscode/",
+          ".gitignore",
+          "Dockerfile",
+          "package-lock.json",
+          "package.json",
+          "react-router.config.ts",
+          "README.md",
+          "tsconfig.json",
+          "vite.config.ts",
+          "wrangler.jsonc",
+          ".dockerignore",
+          "node_modules/",
+          ".react-router/"
+        ]
+      },
+      {
+        "name": "Strict",
+        "detail": "Hide everything not immediately required",
+        "hidden": ["$Default"]
+      }
+    ]
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    ".vscode/": true,
+    ".gitignore": true,
+    "Dockerfile": true,
+    "package-lock.json": true,
+    "package.json": true,
+    "react-router.config.ts": true,
+    "README.md": true,
+    "tsconfig.json": true,
+    "vite.config.ts": true,
+    "wrangler.jsonc": true,
+    ".dockerignore": true,
+    "node_modules/": true,
+    ".react-router/": true
+  },
+  "hidefiles.selectedProfile": "Default"
+}
