@@ -1,3 +1,4 @@
+import { Clone } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
@@ -54,7 +55,7 @@ export default function MemoryCard({
 
   return (
     <group ref={cardRef} scale={scale}>
-      <primitive object={card.scene} />
+      <Clone object={card.scene} />{" "}
     </group>
   );
 }
