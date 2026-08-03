@@ -250,8 +250,35 @@ function Text3DScene({
     timelineRefs.current = createdTimelines;
     masterRef.current = master;
 
+    // Setup IntersectionObserver with delay/debounce
+    let timer: NodeJS.Timeout;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Debounce / delay (e.g. 300ms delay after scrolled into view)
+          timer = setTimeout(() => {
+            master.play();
+          }, 300);
+        } else {
+          // Clear delay & pause timeline when scrolled out of view
+          clearTimeout(timer);
+          master.pause();
+        }
+      },
+      {
+        threshold: 0.8, // Triggers when 80% of the element is visible
+      },
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
     return () => {
       master.kill();
+      clearTimeout(timer);
+      observer.disconnect();
     };
   }, [animation, applyAnimationToAllCharacters, repeatTriggerCount]);
 
