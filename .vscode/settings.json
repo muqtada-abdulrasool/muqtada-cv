@@ -19,7 +19,8 @@
           "wrangler.jsonc",
           ".dockerignore",
           "node_modules/",
-          ".react-router/"
+          ".react-router/",
+          "assets/"
         ]
       },
       {
@@ -47,7 +48,8 @@
     "wrangler.jsonc": true,
     ".dockerignore": true,
     "node_modules/": true,
-    ".react-router/": true
+    ".react-router/": true,
+    "assets/": true
   },
   "hidefiles.selectedProfile": "Default"
 }
