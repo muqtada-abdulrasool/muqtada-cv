@@ -12,15 +12,15 @@ import { Group, MathUtils, Vector3 } from "three";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
 import { getRandomInt } from "~/utilities/RandomRange";
 
-const FONT_PATH = "/fonts/tilges.json";
-const FONT_SIZE = 2;
-const CAMERA_ZOOM = 24;
-
 interface ReactableText3DProps {
   children: string;
   letterSpacing?: number;
   className?: string;
   selectableText?: boolean;
+
+  fontPath?: string;
+  fontSize?: number;
+  cameraZoom?: number;
 
   charactersFollowMouse?: boolean;
   FollowMouseRadius?: number;
@@ -31,6 +31,11 @@ interface ReactableText3DProps {
   characterInstabilityZRange?: [number, number];
   characterInstabilityDurationRange?: [number, number];
   characterInstabilityEase?: gsap.EaseString;
+
+  animation?: (g: Group) => gsap.core.Timeline;
+  repeatTriggerCount?: number;
+  applyAnimationToAllCharacters?: boolean;
+  masterAnimationRepeat?: number;
 }
 
 const tempVec = new Vector3();
@@ -38,6 +43,8 @@ const tempVec = new Vector3();
 function Text3DScene({
   children,
   letterSpacing,
+  fontPath,
+  fontSize,
   charactersFollowMouse = true,
   FollowMouseRadius = 140,
   characterInstablity = true,
@@ -48,9 +55,15 @@ function Text3DScene({
   characterInstabilityEase = "sine.inOut",
   onTotalWidth,
   containerRef,
+  animation,
+  repeatTriggerCount,
+  applyAnimationToAllCharacters,
+  masterAnimationRepeat,
 }: {
   children: string;
   letterSpacing: number;
+  fontPath: string;
+  fontSize: number;
   charactersFollowMouse?: boolean;
   FollowMouseRadius?: number;
   characterInstablity?: boolean;
@@ -61,11 +74,16 @@ function Text3DScene({
   characterInstabilityEase?: gsap.EaseString;
   onTotalWidth: (width: number) => void;
   containerRef: RefObject<HTMLDivElement | null>;
+  animation: ((g: Group) => gsap.core.Timeline) | undefined;
+  repeatTriggerCount: number;
+  applyAnimationToAllCharacters: boolean;
+  masterAnimationRepeat: number;
 }) {
-  const font = useFont(FONT_PATH);
+  const font = useFont(fontPath);
   const groupRefs = useRef<(Group | null)[]>([]);
   const timelineRefs = useRef<(gsap.core.Timeline | null)[]>([]);
   const globalMouse = useRef({ x: -9999, y: -9999 });
+  const masterRef = useRef<gsap.core.Timeline | null>(null);
 
   let currentX = 0;
   const items = [...children].map((char) => {
@@ -73,7 +91,7 @@ function Text3DScene({
       font.data.glyphs[char] ||
       font.data.glyphs[char.toLowerCase()] ||
       font.data.glyphs[" "];
-    const width = ((glyph?.ha ?? 1000) * FONT_SIZE) / font.data.resolution;
+    const width = ((glyph?.ha ?? 1000) * fontSize) / font.data.resolution;
     const posX = currentX + width / 2;
     currentX += width + letterSpacing;
     return { char, posX };
@@ -197,8 +215,48 @@ function Text3DScene({
     characterInstabilityEase,
   ]);
 
+  // Custom Animation
+  useEffect(() => {
+    if (!animation) return;
+
+    const master = gsap.timeline({ repeat: masterAnimationRepeat });
+    const createdTimelines: (gsap.core.Timeline | null)[] = [];
+
+    groupRefs.current.forEach((g, index) => {
+      if (!g) return;
+
+      const letterTl = animation(g);
+      if (!letterTl) return;
+
+      createdTimelines.push(letterTl);
+
+      if (applyAnimationToAllCharacters) {
+        // Force all letter animations to start simultaneously at t = 0
+        master.add(letterTl, 0);
+      } else {
+        // Sequential sequence with repeat offsets
+        if (index === 0) {
+          master.add(letterTl);
+        } else {
+          const singleCycleDuration =
+            letterTl.duration() / (letterTl.repeat() + 1);
+          const triggerOffset = singleCycleDuration * repeatTriggerCount;
+
+          master.add(letterTl, `<+=${triggerOffset}`);
+        }
+      }
+    });
+
+    timelineRefs.current = createdTimelines;
+    masterRef.current = master;
+
+    return () => {
+      master.kill();
+    };
+  }, [animation, applyAnimationToAllCharacters, repeatTriggerCount]);
+
   return (
-    <group position={[-totalWidth / 2, -FONT_SIZE / 2, 0]}>
+    <group position={[-totalWidth / 2, -fontSize / 2, 0]}>
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <ambientLight intensity={1.5} color={"white"} />
 
@@ -223,8 +281,8 @@ function Text3DScene({
                 }
               }
             }}
-            font={FONT_PATH}
-            size={FONT_SIZE}
+            font={fontPath}
+            size={fontSize}
             height={0.2}
             bevelEnabled
             bevelThickness={0.2}
@@ -248,18 +306,25 @@ export default function ReactableText3D({
   letterSpacing = 0.1,
   className = "w-full h-20",
   selectableText = true,
-  charactersFollowMouse = true,
+  fontPath = "/fonts/tilges.json",
+  fontSize = 2,
+  cameraZoom = 24,
+  charactersFollowMouse = false,
   FollowMouseRadius = 140,
-  characterInstablity = true,
+  characterInstablity = false,
   characterInstabilityXRange = [-25, 25],
   characterInstabilityYRange = [-25, 25],
   characterInstabilityZRange = [-10, 10],
   characterInstabilityDurationRange = [0.8, 2.0],
   characterInstabilityEase = "sine.inOut",
+  animation,
+  repeatTriggerCount = 1,
+  applyAnimationToAllCharacters = true,
+  masterAnimationRepeat = -1,
 }: ReactableText3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const pixelFontSize = FONT_SIZE * CAMERA_ZOOM;
-  const letterSpacingPx = letterSpacing * CAMERA_ZOOM;
+  const pixelFontSize = fontSize * cameraZoom;
+  const letterSpacingPx = letterSpacing * cameraZoom;
 
   const [total3DWidth, setTotal3DWidth] = useState<number>(0);
   const [scaleX, setScaleX] = useState<number>(1);
@@ -271,7 +336,7 @@ export default function ReactableText3D({
     // Reset transform to measure actual intrinsic text width
     textRef.current.style.transform = "scaleX(1)";
     const actualWidthPx = textRef.current.getBoundingClientRect().width;
-    const targetWidthPx = total3DWidth * CAMERA_ZOOM;
+    const targetWidthPx = total3DWidth * cameraZoom;
 
     if (actualWidthPx > 0) {
       setScaleX(targetWidthPx / actualWidthPx);
@@ -307,6 +372,8 @@ export default function ReactableText3D({
       <View className="w-full h-full">
         <Text3DScene
           letterSpacing={letterSpacing}
+          fontPath={fontPath}
+          fontSize={fontSize}
           charactersFollowMouse={charactersFollowMouse}
           FollowMouseRadius={FollowMouseRadius}
           characterInstablity={characterInstablity}
@@ -317,13 +384,17 @@ export default function ReactableText3D({
           characterInstabilityEase={characterInstabilityEase}
           onTotalWidth={setTotal3DWidth}
           containerRef={containerRef}
+          animation={animation}
+          repeatTriggerCount={repeatTriggerCount}
+          applyAnimationToAllCharacters={applyAnimationToAllCharacters}
+          masterAnimationRepeat={masterAnimationRepeat}
         >
           {children}
         </Text3DScene>
         <OrthographicCamera
           makeDefault
           position={[0, 0, 10]}
-          zoom={CAMERA_ZOOM}
+          zoom={cameraZoom}
         />
       </View>
     </div>
