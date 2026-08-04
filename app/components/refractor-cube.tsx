@@ -1,40 +1,136 @@
-import { useFrame } from "@react-three/fiber";
-import { Environment, MeshTransmissionMaterial, Text } from "@react-three/drei";
-import { useRef } from "react";
-import type { Group } from "three";
+import {
+  Edges,
+  Environment,
+  MeshTransmissionMaterial,
+  RoundedBox,
+  useCursor,
+} from "@react-three/drei";
+import { useEffect, useRef, useState, type ComponentRef } from "react";
+import { Color, type Group } from "three";
+import { getRandomInt } from "~/utilities/RandomRange";
+import gsap from "gsap";
+import { useNavigate } from "react-router";
 
-export default function RefractorCube() {
+interface RefractorCubeProps {
+  children?: React.ReactNode;
+  size?: number;
+  color?: string;
+  lightIntensity?: number;
+  resolution?: "low" | "high" | "extreme";
+
+  spin?: boolean;
+  spinSpeed?: number;
+
+  hoverable?: boolean;
+  hoverColor?: string;
+
+  to?: string;
+}
+
+export default function RefractorCube({
+  children = <></>,
+  size = 2,
+  color = "#ffffff",
+  lightIntensity = 1,
+  spin = true,
+  spinSpeed = 1,
+  resolution = "high",
+  hoverable = false,
+  hoverColor = "#5CB3FF",
+  to,
+}: RefractorCubeProps) {
   const cubeRef = useRef<Group>(null);
+  const materialRef = useRef<ComponentRef<typeof MeshTransmissionMaterial>>(
+    null!,
+  );
 
-  useFrame((_, delta) => {
-    if (cubeRef.current) {
-      cubeRef.current.rotation.x += delta * 0.3;
-      cubeRef.current.rotation.y += delta * 0.5;
-    }
-  });
+  const [hovered, setHovered] = useState(false);
+  useCursor(hovered && hoverable);
+
+  const navigate = useNavigate();
+
+  // Spinning animations
+  useEffect(() => {
+    if (!cubeRef.current || !spin) return;
+
+    const timeline = gsap.timeline({ repeat: -1 });
+    timeline.to(cubeRef.current.rotation, {
+      x: getRandomInt(1, 2) == 1 ? "+20" : "-20",
+      y: getRandomInt(1, 2) == 1 ? "+20" : "-20",
+      z: getRandomInt(1, 2) == 1 ? "+20" : "-20",
+      duration:
+        (getRandomInt(400, 800) * 0.1) / (hovered ? spinSpeed * 2 : spinSpeed),
+      ease: "none",
+    });
+  }, [hovered]);
+
+  // Hover animations
+  useEffect(() => {
+    if (!materialRef.current || !hoverable) return;
+
+    const multiplier = hovered ? lightIntensity * 2 : lightIntensity;
+    const baseColor = new Color(hovered ? hoverColor : color);
+
+    // Boost RGB channels beyond 1.0 for HDR brightness intensity
+    gsap.to(materialRef.current.color as Color, {
+      r: baseColor.r * multiplier,
+      g: baseColor.g * multiplier,
+      b: baseColor.b * multiplier,
+      duration: 0.2,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+  }, [hovered, color, hoverColor, lightIntensity]);
 
   return (
     <>
-      <Text fontSize={0.5} fontWeight={800}>
-        MEOW
-      </Text>
+      {children}
+
       <group ref={cubeRef}>
-        <mesh>
-          <boxGeometry args={[2, 2, 2]} />
-          <Environment preset="city" environmentIntensity={2} />
+        <RoundedBox
+          args={[size, size, size]}
+          radius={0.05}
+          smoothness={4}
+          onPointerOver={(e) => {
+            if (!hoverable) return;
+
+            e.stopPropagation();
+            setHovered(true);
+          }}
+          onPointerOut={() => setHovered(false)}
+
+          onClick={() => {
+            to && navigate(to);
+          }}
+        >
+          <Environment
+            preset="studio"
+            environmentIntensity={lightIntensity}
+            environmentRotation={[0, 90, 0]}
+          />
+
           <MeshTransmissionMaterial
+            ref={materialRef}
             backside={true} // Renders back faces for depth inside glass
             samples={8} // Refraction sample quality
-            resolution={1024} // Buffer resolution
+            resolution={
+              resolution == "low" ? 256 : resolution == "high" ? 512 : 1024
+            } // Buffer resolution
             transmission={0.95} // Overall transparency
             roughness={0} // Frosted/smooth glass slider
-            ior={1.7} // Index of Refraction (1.5 = Standard Glass)
-            thickness={0.4} // Refraction depth illusion
+            ior={1.8} // Index of Refraction (1.5 = Standard Glass)
+            thickness={1.8} // Refraction depth illusion
             chromaticAberration={0.1} // Rainbow color separation
             distortion={0.1} // Lens wave distortion
-            color="#5CB3FF" // Glass tint: (Deep Blue: #003791, Bright Cyan: #5CB3FF, Dark Navy: #1a2930)
+            color={color} // Glass tint: (Deep Blue: #003791, Bright Cyan: #5CB3FF, Dark Navy: #1a2930)
           />
-        </mesh>
+
+          <Edges
+            scale={1.002} // Prevents Z-fighting with glass faces
+            threshold={15} // Isolates corner edges
+            color="#003791" // Edge Color
+          />
+        </RoundedBox>
       </group>
     </>
   );

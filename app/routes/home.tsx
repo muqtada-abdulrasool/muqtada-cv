@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import MemoryCard from "~/components/memory-card";
-import { View } from "@react-three/drei";
+import { Image, Text, Texture, View } from "@react-three/drei";
 import ReactableText3D from "~/components/reactable-text-3d";
 import gsap from "gsap";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
@@ -18,8 +18,9 @@ export default function Home() {
     <div className="flex flex-col grow items-center justify-center bg-blue-800">
       <div className="flex flex-row justify-center items-center">
         <View className="size-40">
-          <RefractorCube />
-          <directionalLight position={[0, 0, 5]} intensity={5} />
+          <RefractorCube lightIntensity={1} resolution="extreme">
+            <Image url="/icons/ps2.svg" transparent scale={[1.5, 1.5]} />
+          </RefractorCube>
         </View>
 
         <div className="flex flex-col items-center">
@@ -34,8 +35,9 @@ export default function Home() {
         </div>
 
         <View className="size-40">
-          <RefractorCube />
-          <directionalLight position={[0, 0, 5]} intensity={5} />
+          <RefractorCube hoverable to="/meow">
+            <Text fontSize={0.6}>Meow</Text>
+          </RefractorCube>
         </View>
       </div>
 
