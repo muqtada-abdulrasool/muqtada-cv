@@ -5,6 +5,8 @@ import ReactableText3D from "~/components/reactable-text-3d";
 import gsap from "gsap";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
 import RefractorCube from "~/components/refractor-cube";
+import { setOrbTarget } from "~/contexts/orb-context";
+import { useRef } from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -14,6 +16,8 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const memRef = useRef<HTMLElement>(null);
+
   return (
     <div className="flex flex-col grow items-center justify-center bg-blue-800">
       <div className="flex flex-row justify-center items-center">
@@ -24,7 +28,7 @@ export default function Home() {
         </View>
 
         <div className="flex flex-col items-center">
-          <View className="size-40">
+          <View className="size-40" ref={memRef}>
             <MemoryCard scale={0.5} bobHeight={0.5} />
             <directionalLight position={[0, 0, 5]} intensity={5} />
           </View>
@@ -34,7 +38,10 @@ export default function Home() {
           </p>
         </div>
 
-        <View className="size-40">
+        <View
+          className="size-40"
+          ref={(node) => setOrbTarget(node as HTMLElement)}
+        >
           <RefractorCube hoverable to="/meow">
             <Text fontSize={0.6}>Meow</Text>
           </RefractorCube>
@@ -72,6 +79,13 @@ export default function Home() {
           This Site is Still Under Construction
         </ReactableText3D>
       </div>
+
+      <button
+        className="w-80 bg-white"
+        onClick={() => setOrbTarget(memRef.current)}
+      >
+        CLICK TO CHANGE TARGET
+      </button>
     </div>
   );
 }

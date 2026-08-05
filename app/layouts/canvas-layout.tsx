@@ -3,6 +3,7 @@ import { View } from "@react-three/drei";
 import { Outlet } from "react-router";
 import { useRef } from "react";
 import { FrameLimiter } from "~/components/frame-limiter";
+import OrbMachine from "~/components/orb-machine";
 
 export default function CanvasLayout() {
   const containerRef = useRef<HTMLDivElement>(null!);
@@ -11,6 +12,9 @@ export default function CanvasLayout() {
     <div ref={containerRef} className="relative h-full w-full flex flex-col">
       {/* Normal HTML */}
       <Outlet />
+
+      {/* Orb Machine */}
+      <OrbMachine count={4} />
 
       {/* Global Canvas */}
       <Canvas
@@ -29,7 +33,6 @@ export default function CanvasLayout() {
       >
         <FrameLimiter fps={60} />
         <View.Port />
-        <directionalLight position={[0, 0, 5]} intensity={5} />
       </Canvas>
     </div>
   );
