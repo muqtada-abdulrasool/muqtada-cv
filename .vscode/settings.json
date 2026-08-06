@@ -20,7 +20,8 @@
           ".dockerignore",
           "node_modules/",
           ".react-router/",
-          "assets/"
+          "assets/",
+          "components.json"
         ]
       },
       {
@@ -35,21 +36,7 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
-    "**/.DS_Store": true,
-    ".vscode/": true,
-    ".gitignore": true,
-    "Dockerfile": true,
-    "package-lock.json": true,
-    "package.json": true,
-    "react-router.config.ts": true,
-    "README.md": true,
-    "tsconfig.json": true,
-    "vite.config.ts": true,
-    "wrangler.jsonc": true,
-    ".dockerignore": true,
-    "node_modules/": true,
-    ".react-router/": true,
-    "assets/": true
+    "**/.DS_Store": true
   },
-  "hidefiles.selectedProfile": "Default"
+  "hidefiles.selectedProfile": "Show All Files"
 }
