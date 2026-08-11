@@ -63,6 +63,14 @@ body {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --z-index-front-max: var(--z-front-max);
+  --z-index-front: var(--z-front);
+  --z-index-back: var(--z-back);
+  --z-index-back-max: var(--z-back-max);
 }
 
 :root {
@@ -98,6 +106,14 @@ body {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --z-front-max: 100;
+  --z-front: 12;
+  --z-back: -12;
+  --z-back-max: -100;
 }
 
 .dark {
@@ -144,4 +160,22 @@ body {
   html {
     @apply font-sans;
   }
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("/fonts/Helvetica/Helvetica.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("/fonts/Helvetica/Helvetica-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "HelveticaRounded";
+  src: url("/fonts/Helvetica/Helvetica-Rounded-Bold.ttf") format("truetype");
+  font-weight: 700;
 }

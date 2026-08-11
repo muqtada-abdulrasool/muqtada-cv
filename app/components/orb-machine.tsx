@@ -86,7 +86,7 @@ export default function OrbMachine({
         const rect = targetEl.getBoundingClientRect();
         const targetCx = rect.left + rect.width / 2;
         const targetCy = rect.top + rect.height / 2;
-        const targetRadius = Math.max(rect.width, rect.height) / 2 + 40;
+        const targetRadius = Math.max(rect.width, rect.height) / 2 + 20;
 
         // Initialize position instantly on first frame to prevent flying in from (0,0)
         if (!currentPos.current.initialized) {

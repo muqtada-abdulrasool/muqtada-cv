@@ -43,7 +43,7 @@ export function Void({
   }, []);
 
   return (
-    <div className="flex flex-row w-full h-full bg-black absolute">
+    <div className="flex flex-row w-full h-full bg-black fixed inset-0 z-back-max">
       <div
         className="relative overflow-hidden h-full bg-purple-800 mask-[linear-gradient(to_right,black_35%,transparent_100%)] perspective-midrange"
         style={{ minWidth: `${size / 2}%` }}
