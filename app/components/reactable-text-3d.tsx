@@ -18,6 +18,7 @@ interface ReactableText3DProps {
   children: string;
   letterSpacing?: number;
   className?: string;
+  sceneClassname?: string;
   selectableText?: boolean;
 
   color?: string;
@@ -310,27 +311,27 @@ function Text3DScene({
     masterRef.current = master;
 
     // Viewport IntersectionObserver logic...
-    let timer: ReturnType<typeof setTimeout>;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          timer = setTimeout(() => master.play(), 300);
-        } else {
-          clearTimeout(timer);
-          master.pause();
-        }
-      },
-      { threshold: 0.8 },
-    );
+    // let timer: ReturnType<typeof setTimeout>;
+    // const observer = new IntersectionObserver(
+    //   ([entry]) => {
+    //     if (entry.isIntersecting) {
+    //       timer = setTimeout(() => master.play(), 300);
+    //     } else {
+    //       clearTimeout(timer);
+    //       master.pause();
+    //     }
+    //   },
+    //   { threshold: 0.8 },
+    // );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    // if (containerRef.current) {
+    //   observer.observe(containerRef.current);
+    // }
 
     return () => {
       master.kill();
-      clearTimeout(timer);
-      observer.disconnect();
+      // clearTimeout(timer);
+      // observer.disconnect();
       customTimelineRefs.current = [];
     };
   }, [
@@ -383,6 +384,7 @@ export default function ReactableText3D({
   children,
   letterSpacing = 0.1,
   className = "",
+  sceneClassname = "",
   selectableText = true,
   color = "white",
   fontPath = "/fonts/tilges.json",
@@ -393,7 +395,7 @@ export default function ReactableText3D({
   characterInstablity = false,
   characterInstabilityXRange = [-25, 25],
   characterInstabilityYRange = [-25, 25],
-  characterInstabilityZRange = [-10, 10],
+  characterInstabilityZRange = [-5, 5],
   characterInstabilityDurationRange = [0.8, 2.0],
   characterInstabilityEase = "sine.inOut",
   animation,
@@ -460,7 +462,7 @@ export default function ReactableText3D({
     >
       {/* DOM overlay: invisible, selectable text stretched to exactly match the 3D glyphs below. */}
       {selectableText && (
-        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-auto overflow-visible">
+        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-auto">
           <span
             ref={textRef}
             style={{
@@ -478,7 +480,7 @@ export default function ReactableText3D({
       )}
 
       {/* Embedded 3D view - fills the same box the overlay above is matched to. */}
-      <View className="absolute inset-0">
+      <View className={`absolute inset-0 ${sceneClassname}`}>
         <Text3DScene
           text={children}
           letterSpacing={letterSpacing}
