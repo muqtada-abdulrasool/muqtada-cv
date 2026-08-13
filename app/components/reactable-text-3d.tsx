@@ -14,7 +14,7 @@ import { Group, MathUtils, Vector3 } from "three";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
 import { getRandomInt } from "~/utilities/RandomRange";
 
-interface ReactableText3DProps {
+export interface ReactableText3DProps {
   children: string;
   letterSpacing?: number;
   className?: string;
@@ -311,27 +311,27 @@ function Text3DScene({
     masterRef.current = master;
 
     // Viewport IntersectionObserver logic...
-    // let timer: ReturnType<typeof setTimeout>;
-    // const observer = new IntersectionObserver(
-    //   ([entry]) => {
-    //     if (entry.isIntersecting) {
-    //       timer = setTimeout(() => master.play(), 300);
-    //     } else {
-    //       clearTimeout(timer);
-    //       master.pause();
-    //     }
-    //   },
-    //   { threshold: 0.8 },
-    // );
+    let timer: ReturnType<typeof setTimeout>;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => master.play(), 50);
+        } else {
+          clearTimeout(timer);
+          master.pause();
+        }
+      },
+      { threshold: 0.8 },
+    );
 
-    // if (containerRef.current) {
-    //   observer.observe(containerRef.current);
-    // }
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     return () => {
       master.kill();
-      // clearTimeout(timer);
-      // observer.disconnect();
+      clearTimeout(timer);
+      observer.disconnect();
       customTimelineRefs.current = [];
     };
   }, [
@@ -387,7 +387,7 @@ export default function ReactableText3D({
   sceneClassname = "",
   selectableText = true,
   color = "white",
-  fontPath = "/fonts/tilges.json",
+  fontPath = "/fonts/Helvetica/Helvetica.json",
   fontSize = 2,
   cameraZoom = 24,
   charactersFollowMouse = false,
