@@ -4,6 +4,7 @@ import { Outlet } from "react-router";
 import { useRef } from "react";
 import { FrameLimiter } from "~/components/frame-limiter";
 import OrbMachine from "~/components/orb-machine";
+import { ScrollSync } from "~/components/scroll-sync";
 
 export default function CanvasLayout() {
   const containerRef = useRef<HTMLDivElement>(null!);
@@ -14,7 +15,10 @@ export default function CanvasLayout() {
       <Outlet />
 
       {/* Orb Machine */}
-      <OrbMachine count={4} />
+      {/* <OrbMachine count={4} /> */}
+
+      {/* Scroll Synchronizer to Prevent 3D Model lag */}
+      <ScrollSync />
 
       {/* Global Canvas */}
       <Canvas
