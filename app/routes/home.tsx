@@ -31,6 +31,7 @@ import {
   IconWriting,
 } from "@tabler/icons-react";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
+import Seperator3D from "~/components/seperator-3d";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -93,11 +94,19 @@ export default function Home() {
               repeatTriggerCount={1}
               masterAnimationRepeat={0}
               animation={(g) =>
-                gsap.timeline({ repeat: 4 }).to(g.rotation, {
-                  y: `+=${Math.PI * 2}`,
-                  duration: 0.1,
-                  ease: "none",
-                })
+                gsap.timeline({ repeat: 4 }).fromTo(
+                  g.rotation,
+                  {
+                    y: 0,
+                    duration: 0.1,
+                    ease: "none",
+                  },
+                  {
+                    y: 360 * DEG2RAD,
+                    duration: 0.1,
+                    ease: "none",
+                  },
+                )
               }
             >
               *Frontend Developer
@@ -121,40 +130,36 @@ export default function Home() {
           </div>
         </fieldset>
 
-        <Separator className="mt-xl mb-xl relative flex flex-col justify-center items-center">
-          <div className="absolute text-center text-2xl text-white w-30 bg-blue-800 -top-4.5">
-            <ReactableText3D
-              fontSize={1}
-              className="m-auto"
-              sceneClassname="-m-4"
-              color="yellow"
-              animation={(g) => {
-                return gsap
-                  .timeline()
-                  .fromTo(
-                    g.rotation,
-                    {
-                      z: 0 * DEG2RAD,
-                      duration: 1,
-                      ease: "elastic",
-                    },
-                    {
-                      z: -15 * DEG2RAD,
-                      duration: 1,
-                      ease: "elastic",
-                    },
-                  )
-                  .to(g.rotation, {
-                    z: 15 * DEG2RAD,
-                    duration: 1,
-                    ease: "elastic",
-                  });
-              }}
-            >
-              Skills
-            </ReactableText3D>
-          </div>
-        </Separator>
+        <Seperator3D
+          fontSize={1}
+          className="m-auto"
+          sceneClassname="-m-4"
+          color="yellow"
+          animation={(g) => {
+            return gsap
+              .timeline()
+              .fromTo(
+                g.rotation,
+                {
+                  z: 0 * DEG2RAD,
+                  duration: 1,
+                  ease: "elastic",
+                },
+                {
+                  z: -15 * DEG2RAD,
+                  duration: 1,
+                  ease: "elastic",
+                },
+              )
+              .to(g.rotation, {
+                z: 15 * DEG2RAD,
+                duration: 1,
+                ease: "elastic",
+              });
+          }}
+        >
+          Skills
+        </Seperator3D>
 
         {/* Skills */}
         <div className="grid grid-cols-2 gap-md">
@@ -204,6 +209,32 @@ export default function Home() {
             Drawing
           </RefractorSkill>
         </div>
+
+        <Seperator3D
+          fontSize={1}
+          className="m-auto"
+          sceneClassname="-m-4"
+          color="yellow"
+          applyAnimationToAllCharacters={false}
+          repeatTriggerCount={1}
+          masterAnimationRepeat={0}
+          animation={(g) => {
+            return gsap.timeline({ repeat: 4 }).fromTo(
+              g.rotation,
+              {
+                x: 0 * DEG2RAD,
+                ease: "none",
+              },
+              {
+                x: 360 * DEG2RAD,
+                duration: 0.2,
+                ease: "none",
+              },
+            );
+          }}
+        >
+          Projects
+        </Seperator3D>
       </Container>
     </div>
   );
