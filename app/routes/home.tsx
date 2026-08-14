@@ -39,8 +39,12 @@ import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Muqtada's Portfolio" },
+    {
+      name: "description",
+      content:
+        "Welcome to Muqtada Abdulrasool's portfolio website! Be careful, for if you open it with your phone, it might implode!",
+    },
   ];
 }
 
@@ -349,9 +353,9 @@ export function DRP() {
   }, [textRef]);
 
   return (
-    <View className="w-1/2 h-60 sticky top-0">
+    <View index={2} className="w-1/2 h-60 aspect-square sticky top-0">
       <Center ref={setTextRef}>
-        <ambientLight intensity={2} position={[0, 2, 1]} />
+        <ambientLight intensity={1.8} position={[0, 2, 1]} />
         <directionalLight
           castShadow
           position={[-5, 8, 5]}
