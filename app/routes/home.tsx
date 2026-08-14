@@ -1,8 +1,8 @@
 import { Void } from "~/components/void";
 import type { Route } from "./+types/home";
-import { View } from "@react-three/drei";
+import { Center, Text3D, useFont, View } from "@react-three/drei";
 import RefractorCube from "~/components/refractor-cube";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { setOrbTarget } from "~/contexts/orb-context";
 import Container from "~/components/container";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
@@ -32,6 +32,10 @@ import {
 } from "@tabler/icons-react";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
 import Seperator3D from "~/components/seperator-3d";
+import { Group, Mesh } from "three";
+import { getRandomInt } from "~/utilities/RandomRange";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -41,14 +45,15 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const DRPRef = useRef<Group>(null);
   const orbRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setOrbTarget(orbRef.current);
-  });
+  }, []);
 
   return (
-    <div className="flex flex-col grow items-center p-20 gap-20 relative">
+    <div className="flex flex-col grow items-center p-20 gap-20 relative text-white">
       {/* Background */}
       <Void
         pattern="/patterns/grid-me.png"
@@ -235,7 +240,170 @@ export default function Home() {
         >
           Projects
         </Seperator3D>
+
+        {/* Projects */}
+        <div className="flex flex-col gap-0 w-full">
+          {/* DRP */}
+          <div className="flex flex-row gap-md size-full">
+            <DRP />
+            <div className="w-1/2 flex flex-col gap-sm">
+              <div className="text-2xl font-bold">
+                Digital Recruitment Platform
+              </div>
+              <Separator />
+              <div>
+                I was the <em>technical lead</em>, the{" "}
+                <em>frontend developer</em>, and the <em>DevOps</em> for the
+                Digital Recruitment Platform.
+                <br />
+                <br />
+                The DRP is a platform where companies browser and make
+                interviews with graduates and students to find suitable hires.
+                <br />
+                <br />
+                The platform has over <em>+50</em> companies, and handles over{" "}
+                <em>+200</em> graduate/student.
+                <br />
+                <br />
+                In the technical lead side, I handled team motivation and
+                consistancy, managed tasks in a cenetral website (Trello). I
+                kept schedules, called meetings, outlined goals, and kept the
+                project within reasonable scope.
+                <br />
+                <br />
+                In terms of the Frontend, the website used React Router and
+                Mantine primarily. It supported dark and light themes, as well
+                as stylized custom themes. Most importantly, considering the
+                platform ran in Iraq, the website had a seamless localization
+                implementation. One click and the website turns Arabic in a
+                millisecond.
+                <br />
+                <br />
+                Server wise, I handled the Linux server myself. I setup the
+                firewall, all networking pipeline, and setup Coolify, the modern
+                open source self-hosting platform. I had also implemented a
+                pipeline for deploying the platform safely on testing servers
+                before publication.
+                <br />
+                <br />
+                An offline, serverless version of the platform available to be
+                viewed freely at any time on my website. Consider the button
+                below to check it out: (Warning: offline version isn't
+                compatible with the Safari browser. )
+                <br />
+                <br />
+              </div>
+              <Link
+                to="https://drp.muqtada.cv"
+                target="_blank"
+                className={buttonVariants({
+                  variant: "default",
+                })}
+                color="#12b886"
+              >
+                Open Offline DRP
+              </Link>
+            </div>
+          </div>
+        </div>
       </Container>
     </div>
+  );
+}
+
+useFont.preload("/fonts/tilges.json");
+
+export function DRP() {
+  const [textRef, setTextRef] = useState<Group | null>(null);
+
+  useEffect(() => {
+    if (!textRef) return;
+    const DRPTL = gsap.timeline({ repeat: -1, repeatRefresh: true });
+    DRPTL.to(
+      textRef.rotation,
+      {
+        x: () => getRandomInt(-10, -40) * DEG2RAD,
+        duration: getRandomInt(1200, 3200) * 0.001,
+        ease: "none",
+      },
+      0,
+    )
+      .to(
+        textRef.rotation,
+        {
+          y: () => getRandomInt(5, 20) * DEG2RAD,
+          duration: getRandomInt(1200, 3200) * 0.001,
+          ease: "none",
+        },
+        0,
+      )
+      .to(
+        textRef.rotation,
+        {
+          z: () => getRandomInt(5, 20) * DEG2RAD,
+          duration: getRandomInt(1200, 3200) * 0.001,
+          ease: "none",
+        },
+        0,
+      );
+  }, [textRef]);
+
+  return (
+    <View className="w-1/2 h-60 sticky top-0">
+      <Center ref={setTextRef}>
+        <ambientLight intensity={2} position={[0, 2, 1]} />
+        <directionalLight
+          castShadow
+          position={[-5, 8, 5]}
+          intensity={2.5}
+          shadow-mapSize={[1024, 1024]}
+        />
+
+        <Text3D
+          height={1}
+          size={2}
+          position={[0, 0, 0]}
+          font="/fonts/tilges.json"
+          curveSegments={32}
+          bevelEnabled
+          bevelSegments={8}
+          bevelSize={0.05}
+          bevelThickness={0.05}
+        >
+          D
+          <meshStandardMaterial color={"#12b886"} />
+        </Text3D>
+
+        <Text3D
+          height={1}
+          size={2}
+          position={[2.2, 0, 0]}
+          font="/fonts/tilges.json"
+          curveSegments={32}
+          bevelEnabled
+          bevelSegments={8}
+          bevelSize={0.05}
+          bevelThickness={0.05}
+        >
+          R
+          <meshStandardMaterial color={"#228be6"} />
+        </Text3D>
+
+        <Text3D
+          height={1}
+          size={2}
+          position={[4.4, 0, 0]}
+          font="/fonts/tilges.json"
+          curveSegments={32}
+          bevelEnabled
+          bevelSegments={8}
+          bevelSize={0.05}
+          bevelThickness={0.05}
+        >
+          P
+          <meshStandardMaterial color={"#ff6fa1"} />
+        </Text3D>
+      </Center>
+    </View>
   );
 }
