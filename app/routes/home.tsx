@@ -302,10 +302,80 @@ export default function Home() {
                 target="_blank"
                 className={buttonVariants({
                   variant: "default",
+                  // className: "bg-[#DBD854]!",
                 })}
-                color="#12b886"
               >
                 Open Offline DRP
+              </Link>
+              {/* <Link
+                to="https://drp.aliraqia.edu.iq"
+                target="_blank"
+                className={buttonVariants({
+                  variant: "default",
+                  // className: "bg-[#DBD854]!",
+                })}
+              >
+                Open Official DRP
+              </Link> */}
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Muqtada CV */}
+          <div className="flex flex-row gap-md size-full">
+            <MuqtadaCV />
+            <div className="w-1/2 flex flex-col gap-sm">
+              <div className="text-2xl font-bold">Portfolio Website</div>
+              <Separator />
+              <div>
+                I had developed my portfolio with the intention of improving
+                niche, rare-to-find skills in the industry. This included, but
+                not limited to, <em>rendering 3D models</em>,{" "}
+                <em>animations</em>, and{" "}
+                <em>creative design approaches that stand out</em>.
+                <br />
+                <br />
+                The portfolio utilizes the library <em>THREE.js</em> to render
+                3D elements in the page. I had refrained from using multiple
+                canvases throughout as to not hit the WebGL limit, and as such,
+                I had to render one fixed canvas with multiple view components
+                to render 3D models whenever I needed. This layout renders the
+                3D models only at a limited 60 FPS as to not throttle the user's
+                computer.
+                <br />
+                <br />
+                The main inspiration for the portfolio, as you may guess, is the
+                PlayStation 2. And one of its most difficult effects to
+                replicate was the refractor cube. I worked to fine-tune the
+                THREE.js shader to make it look as close as possible to how the
+                cubes look in the PS2, though, with some added effects.
+                <br />
+                <br />
+                The background is also inspired by the PS2, though I had taken
+                some creative liberties here to shake things up a bit. It may
+                come as a surprise, but the background is actually just an
+                illusion. Using actual 3D models to render infinite scrolling
+                was somewhat wasteful in terms of performance, as such, I had
+                utilized the CSS perspective warp effect to achieve the look you
+                see right now.
+                <br />
+                <br />I had put much effort and work into the 3D text of the
+                website. They are not only animated by choice, they act like
+                normal, selectable HTML text. This allows for a seemless
+                interaction between the user and the website.
+                <br />
+                <br />
+              </div>
+              <Link
+                to="https://muqtada.cv"
+                target="_blank"
+                className={buttonVariants({
+                  variant: "default",
+                  // className: "bg-[#DBD854]!",
+                })}
+              >
+                Open Portfolio
               </Link>
             </div>
           </div>
@@ -409,6 +479,21 @@ export function DRP() {
             <meshStandardMaterial color={"#ff6fa1"} />
           </Text3D>
         </Center>
+      </View>
+    </div>
+  );
+}
+
+export function MuqtadaCV() {
+  return (
+    <div className="flex justify-center items-center w-1/2 h-60 aspect-square sticky top-0">
+      <View className="w-64 h-64 scale-140">
+        <RefractorCube
+          resolution="extreme"
+          // color="purple"
+          lightIntensity={1}
+        />
+        <RefractorCube resolution="high" size={1} />
       </View>
     </div>
   );
