@@ -13,10 +13,26 @@ import { useNavigate } from "react-router";
 
 interface RefractorCubeProps {
   children?: React.ReactNode;
-  size?: number;
+  size?: number | [number, number, number];
+  rotation?: [number, number, number];
+  ior?: number;
+  thickness?: number;
   color?: string;
   lightIntensity?: number;
   resolution?: "low" | "high" | "extreme";
+  envRot?: [number, number, number];
+  env?:
+    | "apartment"
+    | "city"
+    | "dawn"
+    | "forest"
+    | "lobby"
+    | "night"
+    | "park"
+    | "studio"
+    | "sunset"
+    | "warehouse"
+    | undefined;
 
   spin?: boolean;
   spinSpeed?: number;
@@ -30,11 +46,16 @@ interface RefractorCubeProps {
 export default function RefractorCube({
   children = <></>,
   size = 2,
+  rotation = [0, 0, 0],
+  ior = 1.8,
+  thickness = 1.8,
   color = "#ffffff",
   lightIntensity = 1,
   spin = true,
   spinSpeed = 1,
   resolution = "high",
+  envRot = [0, 90, 0],
+  env = "studio",
   hoverable = false,
   hoverColor = "#5CB3FF",
   to,
@@ -86,9 +107,9 @@ export default function RefractorCube({
     <>
       {children}
 
-      <group ref={cubeRef}>
+      <group ref={cubeRef} rotation={rotation}>
         <RoundedBox
-          args={[size, size, size]}
+          args={typeof size == "number" ? [size, size, size] : size}
           radius={0.05}
           smoothness={4}
           onPointerOver={(e) => {
@@ -104,9 +125,9 @@ export default function RefractorCube({
           }}
         >
           <Environment
-            preset="studio"
+            preset={env}
             environmentIntensity={lightIntensity}
-            environmentRotation={[0, 90, 0]}
+            environmentRotation={envRot}
           />
 
           <MeshTransmissionMaterial
@@ -118,8 +139,8 @@ export default function RefractorCube({
             } // Buffer resolution
             transmission={0.95} // Overall transparency
             roughness={0} // Frosted/smooth glass slider
-            ior={1.8} // Index of Refraction (1.5 = Standard Glass)
-            thickness={1.8} // Refraction depth illusion
+            ior={ior} // Index of Refraction (1.5 = Standard Glass)
+            thickness={thickness} // Refraction depth illusion
             chromaticAberration={0.1} // Rainbow color separation
             distortion={0.1} // Lens wave distortion
             color={color} // Glass tint: (Deep Blue: #003791, Bright Cyan: #5CB3FF, Dark Navy: #1a2930)

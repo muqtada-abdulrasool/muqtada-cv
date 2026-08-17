@@ -1,6 +1,6 @@
 import { Void } from "~/components/void";
 import type { Route } from "./+types/home";
-import { Center, Text3D, useFont, View } from "@react-three/drei";
+import { Center, Image, Text3D, useFont, View } from "@react-three/drei";
 import RefractorCube from "~/components/refractor-cube";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { setOrbTarget } from "~/contexts/orb-context";
@@ -32,7 +32,7 @@ import {
 } from "@tabler/icons-react";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
 import Seperator3D from "~/components/seperator-3d";
-import { Group, Mesh } from "three";
+import { DoubleSide, Group, Mesh } from "three";
 import { getRandomInt } from "~/utilities/RandomRange";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Link } from "react-router";
@@ -265,8 +265,11 @@ export default function Home() {
                 interviews with graduates and students to find suitable hires.
                 <br />
                 <br />
-                The platform has over <em>+50</em> companies, and handles over{" "}
-                <em>+200</em> graduate/student.
+                The platform has the following:
+                <br />
+                <strong>+50 companies</strong>
+                <br />
+                <strong>+200 graduate/student</strong>
                 <br />
                 <br />
                 In the technical lead side, I handled team motivation and
@@ -322,7 +325,7 @@ export default function Home() {
 
           <Separator />
 
-          {/* Muqtada CV */}
+          {/* Portfolio Website */}
           <div className="flex flex-row gap-md size-full">
             <MuqtadaCV />
             <div className="w-1/2 flex flex-col gap-sm">
@@ -376,6 +379,46 @@ export default function Home() {
                 })}
               >
                 Open Portfolio
+              </Link>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Heart. Lungs. Liver. Nerves. */}
+          <div className="flex flex-row gap-md size-full">
+            <HeartLungsLiverNerves />
+            <div className="w-1/2 flex flex-col gap-sm">
+              <div className="text-2xl font-bold">
+                Heart. Lungs. Liver. Nerves.
+              </div>
+              <Separator />
+              <div>
+                This is a fan-made musical track I had composed and produced on
+                my own.
+                <br />
+                <br />I used the Digital Audio Workstation{" "}
+                <em>Bitwig Studio</em> to compose and produce. All instruments
+                and sounds are of my own chosing except the vocal chop.
+                <br />
+                <br />
+                The track had gathered the following statistics:
+                <br />
+                <strong>~500,000 Streams on Spotify</strong>
+                <br />
+                <strong>~420,000 Views on YouTube</strong>
+                <br />
+                <br />
+              </div>
+              <Link
+                to="https://open.spotify.com/track/31PMtjcs0cM1AQMBGLjmgO"
+                target="_blank"
+                className={buttonVariants({
+                  variant: "default",
+                  // className: "bg-[#DBD854]!",
+                })}
+              >
+                Listen on Spotify
               </Link>
             </div>
           </div>
@@ -498,5 +541,42 @@ export function MuqtadaCV() {
     </div>
   );
 }
+
+export function HeartLungsLiverNerves() {
+  const [ref, setRef] = useState<Group | null>(null);
+
+  useEffect(() => {
+    if (!ref) return;
+    const DRPTL = gsap.timeline({ repeat: -1, repeatRefresh: true });
+    DRPTL.to(
+      ref.rotation,
+      {
+        y: () => `+=${360 * DEG2RAD}`,
+        duration: getRandomInt(4200, 6200) * 0.001,
+        ease: "none",
+      },
+      0,
+    );
+  }, [ref]);
+
+  return (
+    <div className="flex justify-center items-center w-1/2 h-60 aspect-square sticky top-0">
+      <View className="w-64 h-64 scale-140">
+        <group ref={setRef}>
+          <RefractorCube
+            resolution="extreme"
+            lightIntensity={1.0}
+            size={[3, 0.4, 3]}
+            spin={false}
+            rotation={[90 * DEG2RAD, 0, 0]}
+            ior={1}
+            thickness={0.5}
+            env="dawn"
+          >
+            <Image url="/icons/hlln.png" scale={2.5} side={DoubleSide} />
+          </RefractorCube>
+        </group>
+      </View>
+    </div>
   );
 }
