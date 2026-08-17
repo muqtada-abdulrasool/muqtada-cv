@@ -21,18 +21,7 @@ interface RefractorCubeProps {
   lightIntensity?: number;
   resolution?: "low" | "high" | "extreme";
   envRot?: [number, number, number];
-  env?:
-    | "apartment"
-    | "city"
-    | "dawn"
-    | "forest"
-    | "lobby"
-    | "night"
-    | "park"
-    | "studio"
-    | "sunset"
-    | "warehouse"
-    | undefined;
+  env?: string;
 
   spin?: boolean;
   spinSpeed?: number;
@@ -55,7 +44,7 @@ export default function RefractorCube({
   spinSpeed = 1,
   resolution = "high",
   envRot = [0, 90, 0],
-  env = "studio",
+  env = "/hdr/studio.hdr",
   hoverable = false,
   hoverColor = "#5CB3FF",
   to,
@@ -125,7 +114,7 @@ export default function RefractorCube({
           }}
         >
           <Environment
-            preset={env}
+            files={env}
             environmentIntensity={lightIntensity}
             environmentRotation={envRot}
           />

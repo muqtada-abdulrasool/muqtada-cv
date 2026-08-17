@@ -571,7 +571,7 @@ export function HeartLungsLiverNerves() {
             rotation={[90 * DEG2RAD, 0, 0]}
             ior={1}
             thickness={0.5}
-            env="dawn"
+            env="/hdr/dawn.hdr"
           >
             <Image url="/icons/hlln.png" scale={2.5} side={DoubleSide} />
           </RefractorCube>
