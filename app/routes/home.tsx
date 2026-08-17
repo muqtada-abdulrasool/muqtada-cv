@@ -246,7 +246,7 @@ export default function Home() {
         </Seperator3D>
 
         {/* Projects */}
-        <div className="flex flex-col gap-0 w-full">
+        <div className="flex flex-col gap-xl w-full">
           {/* DRP */}
           <div className="flex flex-row gap-md size-full">
             <DRP />
@@ -279,8 +279,8 @@ export default function Home() {
                 Mantine primarily. It supported dark and light themes, as well
                 as stylized custom themes. Most importantly, considering the
                 platform ran in Iraq, the website had a seamless localization
-                implementation. One click and the website turns Arabic in a
-                millisecond.
+                implementation. One click and the website turns Arabic in
+                milliseconds.
                 <br />
                 <br />
                 Server wise, I handled the Linux server myself. I setup the
@@ -293,7 +293,7 @@ export default function Home() {
                 An offline, serverless version of the platform available to be
                 viewed freely at any time on my website. Consider the button
                 below to check it out: (Warning: offline version isn't
-                compatible with the Safari browser. )
+                compatible with the Safari browser.)
                 <br />
                 <br />
               </div>
@@ -353,61 +353,65 @@ export function DRP() {
   }, [textRef]);
 
   return (
-    <View index={2} className="w-1/2 h-60 aspect-square sticky top-0">
-      <Center ref={setTextRef}>
-        <ambientLight intensity={1.8} position={[0, 2, 1]} />
-        <directionalLight
-          castShadow
-          position={[-5, 8, 5]}
-          intensity={2.5}
-          shadow-mapSize={[1024, 1024]}
-        />
+    <div className="flex justify-center items-center w-1/2 h-60 aspect-square sticky top-0">
+      <View className="w-64 h-64 scale-140">
+        <Center ref={setTextRef}>
+          <ambientLight intensity={1.8} position={[0, 2, 1]} />
+          <directionalLight
+            castShadow
+            position={[-5, 8, 5]}
+            intensity={2.5}
+            shadow-mapSize={[1024, 1024]}
+          />
 
-        <Text3D
-          height={1}
-          size={2}
-          position={[0, 0, 0]}
-          font="/fonts/tilges.json"
-          curveSegments={32}
-          bevelEnabled
-          bevelSegments={8}
-          bevelSize={0.05}
-          bevelThickness={0.05}
-        >
-          D
-          <meshStandardMaterial color={"#12b886"} />
-        </Text3D>
+          <Text3D
+            height={1}
+            size={1.5}
+            position={[0, 0, 0]}
+            font="/fonts/tilges.json"
+            curveSegments={32}
+            bevelEnabled
+            bevelSegments={8}
+            bevelSize={0.05}
+            bevelThickness={0.05}
+          >
+            D
+            <meshStandardMaterial color={"#12b886"} />
+          </Text3D>
 
-        <Text3D
-          height={1}
-          size={2}
-          position={[2.2, 0, 0]}
-          font="/fonts/tilges.json"
-          curveSegments={32}
-          bevelEnabled
-          bevelSegments={8}
-          bevelSize={0.05}
-          bevelThickness={0.05}
-        >
-          R
-          <meshStandardMaterial color={"#228be6"} />
-        </Text3D>
+          <Text3D
+            height={1}
+            size={1.5}
+            position={[1.8, 0, 0]}
+            font="/fonts/tilges.json"
+            curveSegments={32}
+            bevelEnabled
+            bevelSegments={8}
+            bevelSize={0.05}
+            bevelThickness={0.05}
+          >
+            R
+            <meshStandardMaterial color={"#228be6"} />
+          </Text3D>
 
-        <Text3D
-          height={1}
-          size={2}
-          position={[4.4, 0, 0]}
-          font="/fonts/tilges.json"
-          curveSegments={32}
-          bevelEnabled
-          bevelSegments={8}
-          bevelSize={0.05}
-          bevelThickness={0.05}
-        >
-          P
-          <meshStandardMaterial color={"#ff6fa1"} />
-        </Text3D>
-      </Center>
-    </View>
+          <Text3D
+            height={1}
+            size={1.5}
+            position={[3.6, 0, 0]}
+            font="/fonts/tilges.json"
+            curveSegments={32}
+            bevelEnabled
+            bevelSegments={8}
+            bevelSize={0.05}
+            bevelThickness={0.05}
+          >
+            P
+            <meshStandardMaterial color={"#ff6fa1"} />
+          </Text3D>
+        </Center>
+      </View>
+    </div>
+  );
+}
   );
 }
