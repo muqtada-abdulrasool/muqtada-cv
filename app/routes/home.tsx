@@ -69,13 +69,13 @@ export default function Home() {
 
       <Container>
         {/* Header with PFP, Title, and Job Title */}
-        <div className="flex flex-row gap-10 items-center p-md">
-          <Avatar className="size-60" ref={orbRef}>
+        <div className="flex flex-row gap-10 items-center justify-center p-md">
+          {/* <Avatar className="size-60" ref={orbRef}>
             <AvatarImage src="/Muqtada.jpg" />
-          </Avatar>
+          </Avatar> */}
 
-          <div className="flex flex-col gap-xs justify-center h-full">
-            <div className="flex flex-col gap-sm">
+          <div className="flex flex-col gap-xs items-center justify-center h-full">
+            <div className="flex flex-col gap-sm items-center">
               <ReactableText3D
                 charactersFollowMouse
                 FollowMouseRadius={200}
