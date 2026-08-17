@@ -1,3 +1,4 @@
+import "lenis/dist/lenis.css";
 import Lenis from "lenis";
 import { useEffect } from "react";
 
