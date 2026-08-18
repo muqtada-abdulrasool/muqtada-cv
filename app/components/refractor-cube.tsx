@@ -110,7 +110,11 @@ export default function RefractorCube({
           onPointerOut={() => setHovered(false)}
 
           onClick={() => {
-            to && navigate(to);
+            if (!to) return;
+            const newWindow = window.open(to, "_blank", "noopener,noreferrer");
+            if (newWindow) {
+              newWindow.focus();
+            }
           }}
         >
           <Environment
