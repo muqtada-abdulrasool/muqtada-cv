@@ -19,10 +19,12 @@ import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import ReactableText3D from "~/components/reactable-text-3d";
 import gsap from "gsap";
 import { Separator } from "~/components/ui/separator";
-import RefractorSkill from "~/components/refractor-skill";
+import RefractorSkill, { IconImage } from "~/components/refractor-skill";
 import {
   IconAbc,
   IconBallpen,
+  IconBrandGithub,
+  IconBrandLinkedin,
   IconBrandSpotify,
   IconBrandTypescript,
   IconBrandYoutube,
@@ -78,7 +80,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col grow items-center p-20 gap-20 relative text-white">
+    <div className="flex flex-col gap-md grow items-center p-20 relative text-white">
       {/* Background */}
       <Void
         pattern="/patterns/grid-me.png"
@@ -546,6 +548,41 @@ export default function Home() {
           <CopyLabel>CONTACT@MUQTADA.CV</CopyLabel>
         </div>
       </Container>
+
+      {/* Links */}
+      <div className="flex flex-row gap-md justify-center items-center">
+        <View className="size-28">
+          <RefractorCube
+            hoverable
+            to="https://www.linkedin.com/in/muqtada-abdulrasool/"
+            size={3}
+          >
+            <IconImage icon={<IconBrandLinkedin />} scale={1} />
+          </RefractorCube>
+        </View>
+
+        <View className="size-28">
+          <RefractorCube
+            hoverable
+            hoverColor="violet"
+            to="https://github.com/muqtada-abdulrasool"
+            size={3}
+          >
+            <IconImage icon={<IconBrandGithub />} scale={1} />
+          </RefractorCube>
+        </View>
+
+        <View className="size-28">
+          <RefractorCube
+            hoverable
+            hoverColor="red"
+            to="https://www.youtube.com/@DiiaBlood"
+            size={3}
+          >
+            <IconImage icon={<IconBrandYoutube />} scale={1} />
+          </RefractorCube>
+        </View>
+      </div>
     </div>
   );
 }
