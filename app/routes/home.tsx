@@ -23,7 +23,9 @@ import RefractorSkill from "~/components/refractor-skill";
 import {
   IconAbc,
   IconBallpen,
+  IconBrandSpotify,
   IconBrandTypescript,
+  IconBrandYoutube,
   IconBrush,
   IconCloud,
   IconFileTypeCss,
@@ -54,6 +56,7 @@ import { getRandomInt } from "~/utilities/RandomRange";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Link } from "react-router";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import CopyLabel from "~/components/copy-label";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -428,16 +431,32 @@ export default function Home() {
                 <br />
                 <br />
               </div>
-              <Link
-                to="https://open.spotify.com/track/31PMtjcs0cM1AQMBGLjmgO"
-                target="_blank"
-                className={buttonVariants({
-                  variant: "default",
-                  // className: "bg-[#DBD854]!",
-                })}
-              >
-                Listen on Spotify
-              </Link>
+              <div className="flex flex-row gap-md flex-1">
+                <Link
+                  to="https://open.spotify.com/track/31PMtjcs0cM1AQMBGLjmgO"
+                  target="_blank"
+                  className={buttonVariants({
+                    variant: "default",
+                    className: " flex-1",
+                  })}
+                >
+                  <IconBrandSpotify />
+                  Listen on Spotify
+                </Link>
+
+                <Link
+                  to="https://www.youtube.com/watch?v=vcAd6zFbq5I"
+                  target="_blank"
+                  className={buttonVariants({
+                    variant: "default",
+                    // className: "bg-[#DBD854]!",
+                    className: "flex-1",
+                  })}
+                >
+                  <IconBrandYoutube />
+                  Listen on YouTube
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -505,6 +524,26 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+
+        <Seperator3D
+          fontSize={1}
+          className="m-auto"
+          sceneClassname="-m-4"
+          color="yellow"
+          characterInstablity
+          characterInstabilityDurationRange={[0.05, 0.1]}
+          characterInstabilityEase="sine"
+          characterInstabilityXRange={[-15, 15]}
+          characterInstabilityYRange={[-10, 10]}
+          characterInstabilityZRange={[-10, 10]}
+        >
+          Contact
+        </Seperator3D>
+
+        {/* Contact */}
+        <div className="flex flex-row gap-md justify-center items-center w-full -mt-xl">
+          <CopyLabel>CONTACT@MUQTADA.CV</CopyLabel>
         </div>
       </Container>
     </div>
