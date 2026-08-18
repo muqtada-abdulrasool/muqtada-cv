@@ -1,6 +1,16 @@
 import { Void } from "~/components/void";
 import type { Route } from "./+types/home";
-import { Center, Image, Text3D, useFont, View } from "@react-three/drei";
+import {
+  Center,
+  Environment,
+  Image,
+  Text3D,
+  useAnimations,
+  useFBX,
+  useFont,
+  useGLTF,
+  View,
+} from "@react-three/drei";
 import RefractorCube from "~/components/refractor-cube";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { setOrbTarget } from "~/contexts/orb-context";
@@ -32,10 +42,18 @@ import {
 } from "@tabler/icons-react";
 import { DEG2RAD } from "three/src/math/MathUtils.js";
 import Seperator3D from "~/components/seperator-3d";
-import { DoubleSide, Group, Mesh } from "three";
+import {
+  DoubleSide,
+  Group,
+  LoopRepeat,
+  Mesh,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+} from "three";
 import { getRandomInt } from "~/utilities/RandomRange";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Link } from "react-router";
+import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -394,8 +412,8 @@ export default function Home() {
               </div>
               <Separator />
               <div>
-                This is a fan-made musical track I had composed and produced on
-                my own.
+                This is one of the fan-made musical track I had composed and
+                produced on my own.
                 <br />
                 <br />I used the Digital Audio Workstation{" "}
                 <em>Bitwig Studio</em> to compose and produce. All instruments
@@ -420,6 +438,71 @@ export default function Home() {
               >
                 Listen on Spotify
               </Link>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* ...And More! */}
+          <div className="flex flex-row gap-md size-full">
+            <Gears />
+            <div className="w-1/2 flex flex-col gap-sm">
+              <div className="text-2xl font-bold">...And More!</div>
+              <Separator />
+              <div>
+                I had made many more things in my life that, if I counted
+                individually, the length of this section would be quadruple its
+                current size.
+                <br />
+                <br />I had a summer training with Aswar/Titanium in which I had
+                developed an{" "}
+                <Link
+                  to={"https://github.com/muqtada-abdulrasool/hr-admin-panel"}
+                  style={{ textDecoration: "underline", color: "yellow" }}
+                >
+                  admin panel
+                </Link>{" "}
+                from the groundup via NEXT.js and raw CSS.
+                <br />
+                <br />I also created a simple{" "}
+                <Link
+                  to={"https://github.com/muqtada-abdulrasool/Bank-Application"}
+                  style={{ textDecoration: "underline", color: "yellow" }}
+                >
+                  banking application
+                </Link>{" "}
+                with GUI in C++ for my professor in college.
+                <br />
+                <br />I have made numerous{" "}
+                <em>Godot projects with GDScript and Python,</em> some of which
+                had won prizes and was{" "}
+                <Link
+                  to={"https://itch.io/jam/wowie-jam-4/rate/1659608"}
+                  style={{ textDecoration: "underline", color: "yellow" }}
+                >
+                  top 20
+                </Link>{" "}
+                in a competition with thousands of other developers. Another
+                one,{" "}
+                <Link
+                  to={"https://darktimestudio.itch.io/siren-in-the-snow"}
+                  style={{ textDecoration: "underline", color: "yellow" }}
+                >
+                  Siren in the Snow
+                </Link>
+                , had thousands of downloads and tens of YouTubers playing it.
+                <br />
+                <br />I created a{" "}
+                <Link
+                  to={
+                    "https://github.com/muqtada-abdulrasool/Blender-Theme-Changer"
+                  }
+                  style={{ textDecoration: "underline", color: "yellow" }}
+                >
+                  Blender Addon
+                </Link>{" "}
+                that customizes all Blender theme perameters in <em>Python</em>.
+              </div>
             </div>
           </div>
         </div>
@@ -578,5 +661,52 @@ export function HeartLungsLiverNerves() {
         </group>
       </View>
     </div>
+  );
+}
+
+export function Gears() {
+  return (
+    <div className="flex justify-center items-center w-1/2 h-60 aspect-square sticky top-0">
+      <View className="w-64 h-64 scale-140">
+        <Environment files={"/hdr/studio.hdr"} environmentIntensity={0.5} />
+
+        {/* Key Light (Front-Right) - Shape & Shadow Definition */}
+        <directionalLight position={[5, 8, 5]} intensity={2.5} />
+
+        {/* Rim Light (Back-Left) - Crucial for catching metallic edge highlights */}
+        <directionalLight
+          position={[-8, 5, -5]}
+          intensity={4.5}
+          color="#e0f0ff"
+        />
+
+        {/* Subtle Ambient Fill */}
+        <ambientLight intensity={0.25} />
+        <Center>
+          <Model />
+        </Center>
+      </View>
+    </div>
+  );
+}
+
+useGLTF.preload("/models/cube-gears.glb");
+function Model() {
+  const { scene, animations } = useGLTF("/models/cube-gears.glb");
+  const { actions, names } = useAnimations(animations, scene);
+
+  useEffect(() => {
+    names.forEach((name) => {
+      const action = actions[name];
+      if (action) {
+        action.reset().setLoop(LoopRepeat, Infinity).play();
+      }
+    });
+  }, [actions, names]);
+
+  return (
+    <group scale={0.7} rotation={[Math.PI / 4, Math.PI / 4, 0]}>
+      <primitive object={scene} />
+    </group>
   );
 }
