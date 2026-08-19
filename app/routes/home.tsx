@@ -601,7 +601,8 @@ export default function Home() {
           animation={(g) => {
             return gsap
               .timeline({ repeat: 0 })
-              .fromTo(g.scale, { y: 0 }, { y: 1, duration: 0.05 });
+              .fromTo(g.scale, { y: 0, x: 0 }, { y: 2, x: 2, duration: 0.025 })
+              .to(g.scale, { y: 1, x: 1, duration: 0.025 });
           }}
         >
           ©2026 MUQTADA ABDULRASOOL — All rights reserved.
