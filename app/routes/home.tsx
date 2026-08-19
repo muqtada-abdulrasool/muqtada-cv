@@ -25,7 +25,10 @@ import {
   IconBallpen,
   IconBrandGithub,
   IconBrandLinkedin,
+  IconBrandNextjs,
+  IconBrandReact,
   IconBrandSpotify,
+  IconBrandThreejs,
   IconBrandTypescript,
   IconBrandYoutube,
   IconBrush,
@@ -206,16 +209,16 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-3 gap-md">
-          <RefractorSkill icon={<IconHtml />} color="white">
-            HTML
+          <RefractorSkill icon={<IconBrandThreejs />} color="white">
+            THREE.js
           </RefractorSkill>
 
-          <RefractorSkill icon={<IconFileTypeCss />} color="white">
-            CSS
+          <RefractorSkill icon={<IconBrandReact />} color="white">
+            React.js
           </RefractorSkill>
 
-          <RefractorSkill icon={<IconBrandTypescript />} color="white">
-            TypeScript
+          <RefractorSkill icon={<IconBrandNextjs />} color="white">
+            NEXT.js
           </RefractorSkill>
 
           <RefractorSkill icon={<IconUsersGroup />} color="white">
