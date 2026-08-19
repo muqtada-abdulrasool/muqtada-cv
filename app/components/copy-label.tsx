@@ -1,6 +1,7 @@
 import { IconCheck, IconClipboard } from "@tabler/icons-react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { useState } from "react";
+import { cn } from "~/lib/utils";
 
 interface CopyLabelProps {
   children?: string;
@@ -23,14 +24,14 @@ export default function CopyLabel({
 
   return (
     <div className={`flex flex-row gap-0 h-10 ${className}`}>
-      <Button
-        variant={"default"}
-        className={
-          "rounded-se-none rounded-ee-none text-lg font-bold h-full pointer-events-none flex-1"
-        }
+      <div
+        className={cn(
+          buttonVariants({ variant: "default" }),
+          "rounded-se-none rounded-ee-none text-lg font-bold h-full flex-1 select-text cursor-text hover:bg-primary",
+        )}
       >
         {children}
-      </Button>
+      </div>
       <div className="flex flex-row border-top-start-radius-md">
         <Button
           variant={"outline"}
