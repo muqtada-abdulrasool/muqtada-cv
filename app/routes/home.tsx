@@ -30,6 +30,7 @@ import {
   IconBrandYoutube,
   IconBrush,
   IconCloud,
+  IconFileCv,
   IconFileTypeCss,
   IconFileTypeHtml,
   IconFileTypeTs,
@@ -558,6 +559,12 @@ export default function Home() {
             size={3}
           >
             <IconImage icon={<IconBrandLinkedin />} scale={1} />
+          </RefractorCube>
+        </View>
+
+        <View className="size-28">
+          <RefractorCube hoverable hoverColor="lime" to="/cv.pdf" size={3}>
+            <IconImage icon={<IconFileCv />} scale={1} />
           </RefractorCube>
         </View>
 
