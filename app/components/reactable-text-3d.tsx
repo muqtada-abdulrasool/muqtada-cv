@@ -347,7 +347,7 @@ function Text3DScene({
     // repositioning, so there's no chance of it lagging a resize/viewport
     // update by a frame and drifting out of sync with the DOM overlay.
     <group position={[-totalWidth / 2, yOffset, 0]}>
-      <directionalLight position={[5, 5, 5]} intensity={2} />
+      <directionalLight position={[5, 5, 5]} intensity={3} />
       <ambientLight intensity={1.5} color={color} />
 
       {items.map(({ char, posX, width }, i) => (
