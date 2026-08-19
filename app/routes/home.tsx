@@ -590,6 +590,23 @@ export default function Home() {
           </RefractorCube>
         </View>
       </div>
+
+      <div className="flex justify-center mt-xl">
+        {/* ©2026 MUQTADA ABDULRASOOL — A Webflow Product. All rights reserved. */}
+
+        <ReactableText3D
+          fontSize={0.5}
+          applyAnimationToAllCharacters={false}
+          masterAnimationRepeat={0}
+          animation={(g) => {
+            return gsap
+              .timeline({ repeat: 0 })
+              .fromTo(g.scale, { y: 0 }, { y: 1, duration: 0.05 });
+          }}
+        >
+          ©2026 MUQTADA ABDULRASOOL — All rights reserved.
+        </ReactableText3D>
+      </div>
     </div>
   );
 }
